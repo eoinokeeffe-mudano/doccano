@@ -182,11 +182,11 @@ SOCIAL_AUTH_PIPELINE = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'myproject',
-        'USER': 'myprojectuser',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': env('DOCCANO_DB_NAME', None),
+        'USER': env('DOCCANO_DB_USER', None),
+        'PASSWORD': env('DOCCANO_DB_PASSWD', None),
+        'HOST': env('DOCCANO_DB_HOST', None),
+        'PORT': env('DOCCANO_DB_PORT', None),
     }
 }
 
