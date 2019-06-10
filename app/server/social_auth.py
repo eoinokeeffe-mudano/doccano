@@ -2,6 +2,7 @@ import requests
 from django.conf import settings
 from social_core.backends.azuread_tenant import AzureADTenantOAuth2
 from social_core.backends.github import GithubOAuth2
+from social_core.backends.google import GoogleOAuth2
 
 
 # noinspection PyUnusedLocal
@@ -68,3 +69,9 @@ def fetch_azuread_permissions(strategy, details, user=None, is_new=False, *args,
     if user.is_superuser != is_superuser:
         user.is_superuser = is_superuser
         user.save()
+
+# noinspection PyUnusedLocal
+def fetch_google2_permissions(strategy, details, user=None, is_new=False, *args, **kwargs):
+    # TODO add logic to check if user is super_user
+    # 
+    user.save()

@@ -136,6 +136,8 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.github.GithubOAuth2',
     'social_core.backends.azuread_tenant.AzureADTenantOAuth2',
     'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.open_id.OpenIdAuth',
+    'social_core.backends.google.GoogleOAuth2',
 ]
 
 SOCIAL_AUTH_GITHUB_KEY = env('OAUTH_GITHUB_KEY', None)
@@ -155,6 +157,10 @@ if AZUREAD_ADMIN_GROUP_ID:
     SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_RESOURCE = 'https://graph.microsoft.com/'
     SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SCOPE = ['Directory.Read.All']
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('OAUTH_GOOGLE2_KEY', None)
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('OUTH_GOOGLE2_SECRET',None)
+
+
 SOCIAL_AUTH_PIPELINE = [
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
@@ -167,6 +173,7 @@ SOCIAL_AUTH_PIPELINE = [
     'social_core.pipeline.user.user_details',
     'server.social_auth.fetch_github_permissions',
     'server.social_auth.fetch_azuread_permissions',
+    'server.social_auth.fetch_google2_permissions',
 ]
 
 # Database
@@ -174,8 +181,12 @@ SOCIAL_AUTH_PIPELINE = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'myproject',
+        'USER': 'myprojectuser',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
