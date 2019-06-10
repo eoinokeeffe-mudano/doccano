@@ -1,7 +1,10 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import BasePermission, SAFE_METHODS, IsAdminUser
+import logging
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 from .models import Project
 
 
@@ -11,7 +14,8 @@ class IsProjectUser(BasePermission):
         user = request.user
         project_id = view.kwargs.get('project_id') or request.query_params.get('project_id')
         project = get_object_or_404(Project, pk=project_id)
-
+        logging.debug(user)
+        logging.debug(project)
         return user in project.users.all()
 
 

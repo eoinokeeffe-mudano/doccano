@@ -23,6 +23,12 @@ from .utils import CSVParser, JSONParser, PlainTextParser, CoNLLParser, iterable
 from .utils import JSONLRenderer
 from .utils import JSONPainter, CSVPainter
 
+from .models import Project
+
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 class Me(APIView):
     permission_classes = (IsAuthenticated,)
@@ -46,9 +52,10 @@ class ProjectList(generics.ListCreateAPIView):
     serializer_class = ProjectPolymorphicSerializer
     pagination_class = None
     permission_classes = (IsAuthenticated, IsAdminUserAndWriteOnly)
-
+    logger.info("Test")
     def get_queryset(self):
-        return self.request.user.projects
+        # return self.request.user.projects
+        return Project.objects.all()
 
     def perform_create(self, serializer):
         serializer.save(users=[self.request.user])

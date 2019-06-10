@@ -2,6 +2,10 @@ from django.db.models import Count
 from django_filters.rest_framework import FilterSet, BooleanFilter
 from .models import Document
 
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 class DocumentFilter(FilterSet):
     seq_annotations__isnull = BooleanFilter(field_name='seq_annotations', method='filter_annotations')
