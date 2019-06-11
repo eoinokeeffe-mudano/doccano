@@ -25,7 +25,7 @@ Resources:
     Type: 'AWS::EC2::Instance'
     Properties:
       InstanceType: t2.micro
-      ImageId: ami-0ac019f4fcb7cb7e6
+      ImageId: ami-08660f1c6fb6b01e7
       KeyName: !Ref KeyName
       SecurityGroups:
         - !Ref AppSG
@@ -92,28 +92,6 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 3547c02e-5393-4b26-a9af-6f00dc2cbcdb
-Metadata:
-  'AWS::CloudFormation::Designer':
-    116a7f7b-14c5-489a-a3c8-faf276be7ab0:
-      size:
-        width: 60
-        height: 60
-      position:
-        x: 60
-        'y': 210
-      z: 1
-      embeds: []
-    3547c02e-5393-4b26-a9af-6f00dc2cbcdb:
-      size:
-        width: 60
-        height: 60
-      position:
-        x: 180
-        'y': 210
-      z: 1
-      embeds: []
-      isassociatedwith:
-        - 116a7f7b-14c5-489a-a3c8-faf276be7ab0
 Parameters:
   InstanceType:
     Description: Server EC2 instance type
