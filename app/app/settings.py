@@ -181,22 +181,22 @@ SOCIAL_AUTH_PIPELINE = [
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': env('DOCCANO_DB_NAME', None),
+#        'USER': env('DOCCANO_DB_USER', None),
+#        'PASSWORD': env('DOCCANO_DB_PASSWD', None),
+#        'HOST': env('DOCCANO_DB_HOST', None),
+#        'PORT': env('DOCCANO_DB_PORT', None),
+#    }
+#}
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DOCCANO_DB_NAME', None),
-        'USER': env('DOCCANO_DB_USER', None),
-        'PASSWORD': env('DOCCANO_DB_PASSWD', None),
-        'HOST': env('DOCCANO_DB_HOST', None),
-        'PORT': env('DOCCANO_DB_PORT', None),
-    }
-}
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': path.join(BASE_DIR, 'db.sqlite3'),
+     }
+ }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
