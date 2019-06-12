@@ -92,6 +92,60 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: 3547c02e-5393-4b26-a9af-6f00dc2cbcdb
+
+  KMSKey:
+        Type: 'AWS::KMS::Key'
+        Properties:
+            Description: !Join [" ", [ "RDS encryption key for",  !Ref "AWS::StackName" ]]
+            KeyPolicy:
+                Version: 2012-10-17
+                Id: key-default-1
+                Statement:
+                    -   Sid: Enable root user permissions
+                        Effect: Allow
+                        Principal:
+                            AWS: !Join ['', ['arn:aws:iam::', !Ref 'AWS::AccountId', ':root']]
+                        Action: 'kms:*'
+                        Resource: '*'
+                    # -   Sid: Enable IAM User Permissions, TODO should look into this later, but it won't let me create anything without a local user permission statement
+                    #     Effect: Allow
+                    #     Principal:
+                    #         AWS: !Join ['', ['arn:aws:iam::', !Ref 'AWS::AccountId', ':user/marcelo.mendonca@mudano.com']]
+                    #     Action: 'kms:*'
+                    #     Resource: '*'
+
+  KMSAlias:
+      Type: AWS::KMS::Alias
+      Properties:
+          AliasName: !Join ["", [ "alias/", !Ref "AWS::StackName" ]]
+          TargetKeyId: !Ref KMSKey
+
+
+  DatalabellingRDS:
+        Type: AWS::RDS::DBInstance
+        Properties:
+            AllocatedStorage: '10'
+            AllowMajorVersionUpgrade: 'false'
+            AutoMinorVersionUpgrade: 'true'
+            DBInstanceClass: db.t2.small
+            DBInstanceIdentifier: !Sub "${EnvironmentName}-data-labelling-db"
+            Port: '5432'
+            PubliclyAccessible: 'true'
+            StorageType: gp2
+            StorageEncrypted: true
+            KmsKeyId: !Ref "KMSKey"
+            BackupRetentionPeriod: '7'
+            MasterUsername: postgres
+            MasterUserPassword: !Ref RDSMasterUserPassword
+            PreferredBackupWindow: '01:54-02:24'
+            PreferredMaintenanceWindow: fri:04:31-fri:16:31
+            DBName: data_labelling
+            DBSubnetGroupName: !Ref RDSSubnetGroup
+            Engine: postgres
+            EngineVersion: '10.4'
+            LicenseModel: postgresql-license
+            VPCSecurityGroups:
+                - !Ref RDSSecurityGroup
 Parameters:
   InstanceType:
     Description: Server EC2 instance type
@@ -138,6 +192,20 @@ Parameters:
     Description: Secret key for Django
     Type: String
     AllowedPattern: '^[a-zA-Z0-9]*$'
+  RDSMasterUserPassword:
+    Description: Password for master user on RDS
+    NoEcho: true
+    Type: 'AWS::SSM::Parameter::Value<String>'
+  RDSSecurityGroup:
+    Description: Security Group for DB instance
+    Type: 'AWS::SSM::Parameter::Value<String>'
+  RDSSubnetGroup:
+    Description: Subnet Group for DB instance
+    Type: 'AWS::SSM::Parameter::Value<String>'
+  EnvironmentName:
+    Description: An environment name that will be prefixed to resource names
+    Type: String
+
 Outputs:
   PublicDNS:
     Value: !GetAtt 
